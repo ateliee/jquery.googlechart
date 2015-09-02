@@ -5,6 +5,13 @@
 [google chart](https://developers.google.com/chart/) use jQuery.
 this plugin will resize your chart if the browser changes size, along with providing the perfect scale granularity for that size.
 
+## support
+* AreaChart
+* PieChart
+* LineChart
+* ColumnChart
+* Line
+
 ## how to use
 ```
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
