@@ -2,7 +2,7 @@
 # google chart for jQuery plugin
 
 ## Description
-![google chart](https://developers.google.com/chart/) use jQuery.
+[google chart](https://developers.google.com/chart/) use jQuery.
 this plugin will resize your chart if the browser changes size, along with providing the perfect scale granularity for that size.
 
 ## how to use
@@ -11,7 +11,7 @@ this plugin will resize your chart if the browser changes size, along with provi
 <script type="text/javascript" src="/jquery.googlechart/js/jquery.googlechart.js"></script>
 <script type="text/javascript">
     (function(){
-        $('#sample').googleChart('line',{
+        $('#sample').googleChart('LineChart',{
             // google chart option
             title: 'Company Performance',
             curveType: 'function',
@@ -43,3 +43,4 @@ this plugin will resize your chart if the browser changes size, along with provi
 
 ## method
 * draw
+* reload

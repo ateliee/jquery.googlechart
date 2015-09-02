@@ -16,11 +16,24 @@
 
     var methods = {
         draw : function(data) {
+            if(!data){
+                $.error('Method draw does not data on jQuery.googleChart');
+            }
             var $this = $(this);
             var id = $(this).data('googleChart.ID');
             if(chartLists[id]){
                 var d = chartLists[id];
+                d.data = data;
                 googleChart_draw(d.element, d.type, d.options, data);
+            }
+            return $this;
+        },
+        reload : function() {
+            var $this = $(this);
+            var id = $(this).data('googleChart.ID');
+            if(chartLists[id]){
+                var d = chartLists[id];
+                $this.googleChart('draw', d.callback.apply(d.element));
             }
             return $this;
         },
@@ -62,7 +75,8 @@
                     element: this,
                     type : type,
                     options : opts,
-                    callback : callback
+                    callback : callback,
+                    data: null
                 };
             });
         }
@@ -107,7 +121,7 @@
         }else if(type == 'LineChart'){
             chart = new google.visualization.LineChart(element);
         }else{
-            chart = new google.visualization.AreaChart(element);
+            $.error( 'unsupport '+type+' on jQuery.googleChart' );
         }
         chart.draw(data, options);
         $(element).on(event_plex+'draw');
@@ -118,8 +132,7 @@
         }
         for(var i in chartLists){
             var d = chartLists[i];
-            var data = d.callback.apply(d.element);
-            $(d.element).googleChart('draw',data);
+            $(d.element).googleChart('reload');
         }
     };
     var googleChart_init = function(){
@@ -138,7 +151,10 @@
     }
 
     jQuery.extend({
-        googleChartLoad : function() {
+        googleChartLoad : function(packages) {
+            if(typeof packages !== 'undefined'){
+                $.extend(api_packages,packages);
+            }
             if(!api_inited){
                 googleChart_init();
             }
