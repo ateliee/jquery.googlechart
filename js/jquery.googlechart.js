@@ -117,6 +117,7 @@
         PieChart : 'corechart',
         LineChart : 'corechart',
         ColumnChart : 'corechart',
+        Line: 'line',
         GeoChart : 'geochart'
     };
     $.fn.googleChart = function(method,options) {
@@ -148,6 +149,8 @@
             chart = new google.visualization.LineChart(element);
         }else if(type == 'ColumnChart'){
             chart = new google.visualization.ColumnChart(element);
+        }else if(type == 'Line'){
+            chart = new google.charts.Line(element);
         }else{
             $.error( 'unsupport '+type+' on jQuery.googleChart' );
         }
