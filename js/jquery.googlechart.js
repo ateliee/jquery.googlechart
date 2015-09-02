@@ -37,6 +37,31 @@
             }
             return $this;
         },
+        chart: function() {
+            var $this = $(this);
+            var id = $(this).data('googleChart.ID');
+            if(chartLists[id]) {
+                var d = chartLists[id];
+                return d.chart;
+            }
+            return null;
+        },
+        type: function(opts) {
+            var $this = $(this);
+            var id = $(this).data('googleChart.ID');
+            if (typeof opts === 'undefined') {
+                if(chartLists[id]) {
+                    var d = chartLists[id];
+                    return d.type;
+                }
+                return null;
+            } else {
+                if(chartLists[id]) {
+                    var d = chartLists[id];
+                    d.type = opts;
+                }
+            }
+        },
         options: function(opts) {
             var $this = $(this);
             var id = $(this).data('googleChart.ID');
@@ -76,21 +101,22 @@
                     type : type,
                     options : opts,
                     callback : callback,
-                    data: null
+                    data: null,
+                    chart: null
                 };
             });
         }
     };
     var events = {
-        load : function(){
-        },
-        draw : function(){
-        }
+        load:function(){},
+        draw:function(){},
+        init:function(){}
     };
     var chart_types = {
         AreaChart : 'corechart',
         PieChart : 'corechart',
         LineChart : 'corechart',
+        ColumnChart : 'corechart',
         GeoChart : 'geochart'
     };
     $.fn.googleChart = function(method,options) {
@@ -108,7 +134,7 @@
     var googleChart_onLoad = function(){
         for(var i in chartLists){
             var d = chartLists[i];
-            $(d.element).on(event_plex+'load');
+            $(d.element).trigger(event_plex+'load');
         }
         googleChart_draws();
     };
@@ -120,11 +146,19 @@
             chart = new google.visualization.PieChart(element);
         }else if(type == 'LineChart'){
             chart = new google.visualization.LineChart(element);
+        }else if(type == 'ColumnChart'){
+            chart = new google.visualization.ColumnChart(element);
         }else{
             $.error( 'unsupport '+type+' on jQuery.googleChart' );
         }
+        var id = $(element).data('googleChart.ID');
+        if(chartLists[id]) {
+            var d = chartLists[id];
+            d.chart = chart;
+        }
+        $(element).trigger(event_plex+'init');
         chart.draw(data, options);
-        $(element).on(event_plex+'draw');
+        $(element).trigger(event_plex+'draw');
     }
     var googleChart_draws = function(){
         if(!api_inited){
